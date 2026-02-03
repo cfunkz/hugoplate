@@ -36,7 +36,7 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo vel ad consectetur
       },
     },
   });
-})();`](<// main script&#xD;&#xA;(function () \{&#xD;&#xA;  "use strict";&#xD;&#xA;&#xD;&#xA;  // Testimonial Slider&#xD;&#xA;  // ----------------------------------------&#xD;&#xA;  new Swiper(".testimonial-slider", \{&#xD;&#xA;    spaceBetween: 24,&#xD;&#xA;    loop: true,&#xD;&#xA;    pagination: \{&#xD;&#xA;      el: ".testimonial-slider-pagination",&#xD;&#xA;      type: "bullets",&#xD;&#xA;      clickable: true,&#xD;&#xA;    },&#xD;&#xA;    breakpoints: \{&#xD;&#xA;      768: \{&#xD;&#xA;        slidesPerView: 2,&#xD;&#xA;      },&#xD;&#xA;      992: \{&#xD;&#xA;        slidesPerView: 3,&#xD;&#xA;      },&#xD;&#xA;    },&#xD;&#xA;  });&#xD;&#xA;})();&#xD;&#xA;>)​
+})();`](<// main script&#xD;&#xA;(function () \{&#xD;&#xA;  "use strict";&#xD;&#xA;&#xD;&#xA;  // Testimonial Slider&#xD;&#xA;  // ----------------------------------------&#xD;&#xA;  new Swiper(".testimonial-slider", \{&#xD;&#xA;    spaceBetween: 24,&#xD;&#xA;    loop: true,&#xD;&#xA;    pagination: \{&#xD;&#xA;      el: ".testimonial-slider-pagination",&#xD;&#xA;      type: "bullets",&#xD;&#xA;      clickable: true,&#xD;&#xA;    },&#xD;&#xA;    breakpoints: \{&#xD;&#xA;      768: \{&#xD;&#xA;        slidesPerView: 2,&#xD;&#xA;      },&#xD;&#xA;      992: \{&#xD;&#xA;        slidesPerView: 3,&#xD;&#xA;      },&#xD;&#xA;    },&#xD;&#xA;  });&#xD;&#xA;})();&#xD;&#xA;>)​
 
 ## Creative Design
 
