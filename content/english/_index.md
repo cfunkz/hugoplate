@@ -3,7 +3,7 @@
 banner:
   title: "Development, Tech & Security"
   content: "Short tutorials, general tech and security notes, and write-ups on things learned while building and breaking stuff."
-  #image: "/images/banner.png"
+  image: "/images/banner.png"
   button:
     enable: true
     label: "Read Latest Posts →"
