@@ -4,6 +4,16 @@ meta_title: Secure SSH on Debian 11 & 12 with Fail2Ban and SSH Keys
 description: Learn how to secure SSH on Debian 11 and 12 by creating a non-root
   user, disabling password logins, using SSH keys, and adding Fail2Ban
   protection.
+image: media/assets/images/1264201d-5939-4309-849c-cc3f398f9e75.jpg
+categories:
+  - Security
+author: David B.
+tags:
+  - linux
+  - debian
+  - ssh
+  - fail2ban
+draft: false
 ---
 ## How to Secure SSH on Debian 11 & 12 (Users, Keys, Fail2Ban)
 
