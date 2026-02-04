@@ -1,7 +1,7 @@
 ---
 title: David B.
 email: david@techwizards.work
-image: "media/assets/images/1702742096890.jpg"
+image: "/images/avatar-sm.png"
 description: David @ TechWizards
 social:
   - name: github
