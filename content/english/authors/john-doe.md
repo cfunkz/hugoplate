@@ -1,5 +1,5 @@
 ---
-title: David B.
+title: David (Owner, Writer)
 email: david@techwizards.work
 image: "/images/avatar-sm.png"
 description: David @ TechWizards
