@@ -3,7 +3,7 @@ title: "How to lauch Ubuntu VM on Proxmox: A Practical Guide"
 meta_title: "How to create Ubuntu VM on Proxmox"
 description: "Automated Ubuntu VM Creation on Proxmox: A Practical Guide"
 date: 2026-02-04T01:00:00.000Z
-image: "images/code_image.png"
+image: "media/assets/images/code_image.png"
 categories:
   - Tutorial
   - Technology
@@ -15,11 +15,11 @@ tags:
   - linux
 draft: false
 ---
-# Automated Ubuntu VM Creation on Proxmox: A Practical Guide
+## Automated Ubuntu VM Creation on Proxmox: A Practical Guide
 
 Launching virtual machines on Proxmox doesn't have to be tedious! This bash script automates the entire process of creating an Ubuntu cloud-init VM with configurable defaults, network and zero manual configuration. The following tutorial provides a pre-made script and breaks down how it works.
 
-## Quick Start (Run as root on Proxmox)
+### Quick Start (Run as root on Proxmox)
 
 ```bash
 wget https://raw.githubusercontent.com/cfunkz/Proxmox-Cloud-Init/main/start-vm
@@ -29,7 +29,7 @@ chmod +x start-vm
 
 ​[VIEW SCRIPT](https://github.com/cfunkz/Proxmox-Cloud-Init)​
 
-## What the script does
+### What the script does
 
 * Downloads provided cloud image automatically (Ubuntu Noble default)
 * Validates all inputs (VMID, IP addresses, storage)
@@ -41,13 +41,13 @@ chmod +x start-vm
 * Starts the VM and cleans up temporary files
 * Displays final SSH connection details
 
-## Why Automate VM Creation?
+### Why Automate VM Creation?
 
 Creating VMs through the Proxmox UI involves a lot of clicks. This script turns the workflow into interactive prompts, validates inputs, and executes all the necessary `qm` commands automatically. It's perfect for infrastructure-as-code workflows or when you need consistent, repeatable setups.
 
-## The Script Breakdown
+### The Script Breakdown
 
-### Error Handling & Dependencies
+#### Error Handling & Dependencies
 
 ```bash
 set -euo pipefail
@@ -69,7 +69,7 @@ need() {
 
 Checks if required tools exist before proceeding. Calls like `need qm` and `need wget` ensure dependencies are available.
 
-### Input Handling Functions
+#### Input Handling Functions
 
 ```bash
 prompt_default() {
@@ -93,7 +93,7 @@ prompt_required() {
 
 Similar, but loops until the user enters something. No defaults—the field is mandatory. Used for VMID since you can't create a VM without one.
 
-### Validation Functions
+#### Validation Functions
 
 ```bash
 is_ipv4() {
@@ -108,7 +108,7 @@ is_ipv4() {
 
 Validates IPv4 addresses in two steps. First, a regex checks the format. Then, it splits by dots and ensures each octet is 0-255. The `<<<` is a here-string, feeding the IP to the read command. Simple and effective.
 
-## VM Configuration Phase
+### VM Configuration Phase
 
 ```bash
 prompt_required "VMID (numeric)" VMID
@@ -125,7 +125,7 @@ pvesm status | awk 'NR>1 {print $1}' | grep -qx "$STORAGE" || die "Storage '$STO
 
 Gets the storage name and validates it exists. The `awk` skips the header row (`NR>1`) and prints the first column. `grep -qx` does a quiet exact match. This catches typos early.
 
-## Network Configuration: Static or DHCP
+### Network Configuration: Static or DHCP
 
 ```bash
 read -rp "Use DHCP? (y/N): " USE_DHCP
@@ -143,7 +143,7 @@ fi
 
 The `"${USE_DHCP,,}"` converts to lowercase. If DHCP is chosen, `IPCONFIG0` is set to `ip=dhcp` and skips all static prompts. Otherwise, it builds the static config string. This variable is reused later during cloud-init setup.
 
-## Image Download & VM Creation
+### Image Download & VM Creation
 
 ```bash
 wget -q --show-progress -O "$IMG_PATH" "$IMG_URL" || die "Download failed"
@@ -174,7 +174,7 @@ Creates the base VM. A few highlights:
 * `--agent enabled=1` installs QEMU guest agent for better integration
 * `--serial0 socket` enables serial console access
 
-## Disk Handling
+### Disk Handling
 
 ```bash
 qm importdisk "$VMID" "$IMG_PATH" "$STORAGE" --format raw
@@ -189,7 +189,7 @@ qm set "$VMID" --ide2 "$STORAGE:cloudinit"
 
 Adds a cloud-init drive. This is where Proxmox stores the network config and user data.
 
-## Cloud-Init Configuration
+### Cloud-Init Configuration
 
 ```bash
 qm set "$VMID" \
@@ -212,7 +212,7 @@ fi
 
 Optionally sets SSH public keys. The `<(...)` is process substitution as `qm` reads from a file-like interface without needing a temp file.
 
-## Startup & Cleanup
+### Startup & Cleanup
 
 ```bash
 qm resize "$VMID" scsi0 "$DISK_SIZE"
@@ -224,4 +224,3 @@ rm -f "$IMG_PATH"
 Resizes the disk to the requested size, sets the boot order, starts the VM, and cleans up the downloaded image. Everything is automated.
 
 ​
-
