@@ -80,7 +80,7 @@ prompt_default() {
 }
 ```
 
-This function prompts the user with a question and shows a default value in brackets. If they press Enter (blank input), it uses the default. The `-v` flag in `printf` assigns the value to a variable name passed as the third argument. This is cleaner than echo and avoids subshells.
+This function prompts with a question and shows a default value in brackets. If Enter (blank input) is pressed, it uses the default. The `-v` flag in `printf` assigns the value to a variable name passed as the third argument. This is cleaner than echo and avoids subshells.
 
 ```bash
 prompt_required() {
@@ -92,7 +92,7 @@ prompt_required() {
 }
 ```
 
-Similar, but loops until the user enters something. No defaults—the field is mandatory. Used for VMID since you can't create a VM without one.
+No defaults, the field is mandatory. Used for VMID since you can't create a VM without one.
 
 #### Validation Functions
 
