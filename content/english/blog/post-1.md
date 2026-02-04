@@ -27,6 +27,8 @@ chmod +x start-vm
 ./start-vm
 ```
 
+​
+
 ​[VIEW SCRIPT](https://github.com/cfunkz/Proxmox-Cloud-Init)​
 
 ## Why Automate VM Creation?
@@ -41,13 +43,13 @@ Creating VMs through the Proxmox UI involves a lot of clicks. This script turns 
 set -euo pipefail
 ```
 
-This is bash's strict mode. The flags mean: exit on error (`-e`), treat undefined variables as errors (`-u`), and fail a pipe if any command fails (`-o pipefail`). This prevents silent failures.
+> This is bash's strict mode. The flags mean: exit on error (`-e`), treat undefined variables as errors (`-u`), and fail a pipe if any command fails (`-o pipefail`). This prevents silent failures.
 
 ```bash
 die() { echo "ERROR: $*" >&2; exit 1; }
 ```
 
-A helper function that prints errors to stderr and exits. Used throughout to bail out gracefully when something goes wrong.
+> A helper function that prints errors to stderr and exits. Used throughout to bail out gracefully when something goes wrong.
 
 ```bash
 need() { 
@@ -55,7 +57,7 @@ need() {
 }
 ```
 
-Checks if required tools exist before proceeding. Calls like `need qm` and `need wget` ensure dependencies are available.
+> Checks if required tools exist before proceeding. Calls like `need qm` and `need wget` ensure dependencies are available.
 
 ### Input Handling Functions
 
@@ -67,7 +69,7 @@ prompt_default() {
 }
 ```
 
-This function prompts the user with a question and shows a default value in brackets. If they press Enter (blank input), it uses the default. The `-v` flag in `printf` assigns the value to a variable name passed as the third argument. This is cleaner than echo and avoids subshells.
+> This function prompts the user with a question and shows a default value in brackets. If they press Enter (blank input), it uses the default. The `-v` flag in `printf` assigns the value to a variable name passed as the third argument. This is cleaner than echo and avoids subshells.
 
 ```bash
 prompt_required() {
@@ -79,7 +81,7 @@ prompt_required() {
 }
 ```
 
-Similar, but loops until the user enters something. No defaults—the field is mandatory. Used for VMID since you can't create a VM without one.
+> Similar, but loops until the user enters something. No defaults—the field is mandatory. Used for VMID since you can't create a VM without one.
 
 ### Validation Functions
 
@@ -94,7 +96,7 @@ is_ipv4() {
 }
 ```
 
-Validates IPv4 addresses in two steps. First, a regex checks the format. Then, it splits by dots and ensures each octet is 0-255. The `<<<` is a here-string, feeding the IP to the read command. Simple and effective.
+> Validates IPv4 addresses in two steps. First, a regex checks the format. Then, it splits by dots and ensures each octet is 0-255. The `<<<` is a here-string, feeding the IP to the read command. Simple and effective.
 
 ## VM Configuration Phase
 
@@ -104,14 +106,14 @@ prompt_required "VMID (numeric)" VMID
 qm status "$VMID" &>/dev/null && die "VMID $VMID already exists"
 ```
 
-Gets the VM ID, validates it's numeric, then checks if it's already in use. The `&>/dev/null` silently discards both stdout and stderr from `qm status`, we only care if the command succeeds or fails.
+> Gets the VM ID, validates it's numeric, then checks if it's already in use. The `&>/dev/null` silently discards both stdout and stderr from `qm status`, we only care if the command succeeds or fails.
 
 ```bash
 prompt_default "Storage" "local-lvm" STORAGE
 pvesm status | awk 'NR>1 {print $1}' | grep -qx "$STORAGE" || die "Storage '$STORAGE' not found"
 ```
 
-Gets the storage name and validates it exists. The `awk` skips the header row (`NR>1`) and prints the first column. `grep -qx` does a quiet exact match. This catches typos early.
+> Gets the storage name and validates it exists. The `awk` skips the header row (`NR>1`) and prints the first column. `grep -qx` does a quiet exact match. This catches typos early.
 
 ## Network Configuration: Static or DHCP
 
@@ -131,7 +133,7 @@ else
 fi
 ```
 
-The `"${USE_DHCP,,}"` converts to lowercase. If DHCP is chosen, `IPCONFIG0` is set to `ip=dhcp` and skips all static prompts. Otherwise, it builds the static config string. This variable is reused later during cloud-init setup.
+* The `"${USE_DHCP,,}"` converts to lowercase. If DHCP is chosen, `IPCONFIG0` is set to `ip=dhcp` and skips all static prompts. Otherwise, it builds the static config string. This variable is reused later during cloud-init setup.
 
 ## Image Download & VM Creation
 
@@ -140,7 +142,7 @@ wget -q --show-progress -O "$IMG_PATH" "$IMG_URL" || die "Download failed"
 [[ -s "$IMG_PATH" ]] || die "Image file empty"
 ```
 
-Downloads the Ubuntu cloud image. The `-q --show-progress` flags give quiet operation with a progress bar. The `-s` test checks file size > 0, preventing partial downloads from silently succeeding.
+> Downloads the Ubuntu cloud image. The `-q --show-progress` flags give quiet operation with a progress bar. The `-s` test checks file size > 0, preventing partial downloads from silently succeeding.
 
 ```bash
 qm create "$VMID" \
@@ -171,13 +173,13 @@ qm importdisk "$VMID" "$IMG_PATH" "$STORAGE" --format raw
 qm set "$VMID" --scsi0 "${STORAGE}:vm-${VMID}-disk-0,discard=on,iothread=1"
 ```
 
-Imports the cloud image and attaches it as the main disk. The `discard=on` enables TRIM to reclaim space, and `iothread=1` improves I/O performance by using a dedicated thread.
+> Imports the cloud image and attaches it as the main disk. The `discard=on` enables TRIM to reclaim space, and `iothread=1` improves I/O performance by using a dedicated thread.
 
 ```bash
 qm set "$VMID" --ide2 "$STORAGE:cloudinit"
 ```
 
-Adds a cloud-init drive. This is where Proxmox stores the network config and user data.
+> Adds a cloud-init drive. This is where Proxmox stores the network config and user data.
 
 ## Cloud-Init Configuration
 
