@@ -19,15 +19,25 @@ draft: false
 
 Launching virtual machines on Proxmox doesn't have to be tedious! This bash script automates the entire process of creating an Ubuntu cloud-init VM with configurable defaults, network and zero manual configuration. The following tutorial provides a pre-made script and breaks down how it works.
 
-## Quick Start (run on Proxmox root shell)
+## What It Does
+
+- Downloads provided cloud image automatically (Ubuntu Noble default)
+- Validates all inputs (VMID, IP addresses, storage)
+- Creates VM with modern defaults (UEFI, virtio drivers, QEMU agent)
+- Configures networking (static IP or DHCP)
+- Sets up cloud-init user and password
+- Imports SSH public keys (optional)
+- Resizes disk to your specification
+- Starts the VM and cleans up temporary files
+- Displays final SSH connection details
+
+## Quick Start (Run as root on Proxmox)
 
 ```bash
 wget https://raw.githubusercontent.com/cfunkz/Proxmox-Cloud-Init/main/start-vm
 chmod +x start-vm
 ./start-vm
 ```
-
-​
 
 ​[VIEW SCRIPT](https://github.com/cfunkz/Proxmox-Cloud-Init)​
 
@@ -43,13 +53,13 @@ Creating VMs through the Proxmox UI involves a lot of clicks. This script turns 
 set -euo pipefail
 ```
 
-> This is bash's strict mode. The flags mean: exit on error (`-e`), treat undefined variables as errors (`-u`), and fail a pipe if any command fails (`-o pipefail`). This prevents silent failures.
+This is bash's strict mode. The flags mean: exit on error (`-e`), treat undefined variables as errors (`-u`), and fail a pipe if any command fails (`-o pipefail`). This prevents silent failures.
 
 ```bash
 die() { echo "ERROR: $*" >&2; exit 1; }
 ```
 
-> A helper function that prints errors to stderr and exits. Used throughout to bail out gracefully when something goes wrong.
+A helper function that prints errors to stderr and exits. Used throughout to bail out gracefully when something goes wrong.
 
 ```bash
 need() { 
@@ -57,7 +67,7 @@ need() {
 }
 ```
 
-> Checks if required tools exist before proceeding. Calls like `need qm` and `need wget` ensure dependencies are available.
+Checks if required tools exist before proceeding. Calls like `need qm` and `need wget` ensure dependencies are available.
 
 ### Input Handling Functions
 
@@ -69,7 +79,7 @@ prompt_default() {
 }
 ```
 
-> This function prompts the user with a question and shows a default value in brackets. If they press Enter (blank input), it uses the default. The `-v` flag in `printf` assigns the value to a variable name passed as the third argument. This is cleaner than echo and avoids subshells.
+This function prompts the user with a question and shows a default value in brackets. If they press Enter (blank input), it uses the default. The `-v` flag in `printf` assigns the value to a variable name passed as the third argument. This is cleaner than echo and avoids subshells.
 
 ```bash
 prompt_required() {
@@ -81,7 +91,7 @@ prompt_required() {
 }
 ```
 
-> Similar, but loops until the user enters something. No defaults—the field is mandatory. Used for VMID since you can't create a VM without one.
+Similar, but loops until the user enters something. No defaults—the field is mandatory. Used for VMID since you can't create a VM without one.
 
 ### Validation Functions
 
@@ -96,7 +106,7 @@ is_ipv4() {
 }
 ```
 
-> Validates IPv4 addresses in two steps. First, a regex checks the format. Then, it splits by dots and ensures each octet is 0-255. The `<<<` is a here-string, feeding the IP to the read command. Simple and effective.
+Validates IPv4 addresses in two steps. First, a regex checks the format. Then, it splits by dots and ensures each octet is 0-255. The `<<<` is a here-string, feeding the IP to the read command. Simple and effective.
 
 ## VM Configuration Phase
 
@@ -106,18 +116,16 @@ prompt_required "VMID (numeric)" VMID
 qm status "$VMID" &>/dev/null && die "VMID $VMID already exists"
 ```
 
-> Gets the VM ID, validates it's numeric, then checks if it's already in use. The `&>/dev/null` silently discards both stdout and stderr from `qm status`, we only care if the command succeeds or fails.
+Gets the VM ID, validates it's numeric, then checks if it's already in use. The `&>/dev/null` silently discards both stdout and stderr from `qm status`, we only care if the command succeeds or fails.
 
 ```bash
 prompt_default "Storage" "local-lvm" STORAGE
 pvesm status | awk 'NR>1 {print $1}' | grep -qx "$STORAGE" || die "Storage '$STORAGE' not found"
 ```
 
-> Gets the storage name and validates it exists. The `awk` skips the header row (`NR>1`) and prints the first column. `grep -qx` does a quiet exact match. This catches typos early.
+Gets the storage name and validates it exists. The `awk` skips the header row (`NR>1`) and prints the first column. `grep -qx` does a quiet exact match. This catches typos early.
 
 ## Network Configuration: Static or DHCP
-
-This is where the script gets smart:
 
 ```bash
 read -rp "Use DHCP? (y/N): " USE_DHCP
@@ -133,7 +141,7 @@ else
 fi
 ```
 
-* The `"${USE_DHCP,,}"` converts to lowercase. If DHCP is chosen, `IPCONFIG0` is set to `ip=dhcp` and skips all static prompts. Otherwise, it builds the static config string. This variable is reused later during cloud-init setup.
+The `"${USE_DHCP,,}"` converts to lowercase. If DHCP is chosen, `IPCONFIG0` is set to `ip=dhcp` and skips all static prompts. Otherwise, it builds the static config string. This variable is reused later during cloud-init setup.
 
 ## Image Download & VM Creation
 
@@ -142,7 +150,7 @@ wget -q --show-progress -O "$IMG_PATH" "$IMG_URL" || die "Download failed"
 [[ -s "$IMG_PATH" ]] || die "Image file empty"
 ```
 
-> Downloads the Ubuntu cloud image. The `-q --show-progress` flags give quiet operation with a progress bar. The `-s` test checks file size > 0, preventing partial downloads from silently succeeding.
+Downloads the Ubuntu cloud image. The `-q --show-progress` flags give quiet operation with a progress bar. The `-s` test checks file size > 0, preventing partial downloads from silently succeeding.
 
 ```bash
 qm create "$VMID" \
@@ -173,13 +181,13 @@ qm importdisk "$VMID" "$IMG_PATH" "$STORAGE" --format raw
 qm set "$VMID" --scsi0 "${STORAGE}:vm-${VMID}-disk-0,discard=on,iothread=1"
 ```
 
-> Imports the cloud image and attaches it as the main disk. The `discard=on` enables TRIM to reclaim space, and `iothread=1` improves I/O performance by using a dedicated thread.
+Imports the cloud image and attaches it as the main disk. The `discard=on` enables TRIM to reclaim space, and `iothread=1` improves I/O performance by using a dedicated thread.
 
 ```bash
 qm set "$VMID" --ide2 "$STORAGE:cloudinit"
 ```
 
-> Adds a cloud-init drive. This is where Proxmox stores the network config and user data.
+Adds a cloud-init drive. This is where Proxmox stores the network config and user data.
 
 ## Cloud-Init Configuration
 
@@ -215,32 +223,7 @@ rm -f "$IMG_PATH"
 
 Resizes the disk to the requested size, sets the boot order, starts the VM, and cleans up the downloaded image. Everything is automated.
 
-## Real-World Usage
 
-```bash
-./proxmox-vm-setup.sh
-```
 
-The script then helps you through an interactive prompts:
 
-```
-=== Proxmox: Ubuntu Cloud-Init VM ===
-
-VMID (numeric): 100
-VM Name [ubuntu-vm]: web-server
-Storage [local-lvm]: 
-Disk size (e.g. 100G) [100G]: 150G
-Memory (MB) [16384]: 8192
-CPU cores [8]: 4
-Network bridge [vmbr0]: 
-
-=== Network ===
-Use DHCP? (y/N): n
-IP address [192.168.1.64]: 192.168.1.100
-CIDR [24]: 
-Gateway [192.168.1.1]: 
-DNS [1.1.1.1]: 
-...
-```
-
-Minute later, your VM is running with SSH ready to go.
+​
