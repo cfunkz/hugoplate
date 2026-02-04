@@ -5,7 +5,7 @@ description: Learn how to secure SSH on Debian 11 and 12 by creating a non-root
   user, disabling password logins, using SSH keys, and adding Fail2Ban
   protection.
 ---
-# How to Secure SSH on Debian 11 & 12 (Users, Keys, Fail2Ban)
+## How to Secure SSH on Debian 11 & 12 (Users, Keys, Fail2Ban)
 
 When you spin up a fresh Debian (or any distro), SSH is usually the first thing exposed to the internet and also the first thing attackers start poking at.
 
@@ -19,7 +19,7 @@ Everything here works on **Debian 11 (Bullseye)** and **Debian 12 (Bookworm)**.
 
 ***
 
-## 1. Create a non-root user
+### 1. Create a non-root user
 
 Running day-to-day admin tasks as root isn’t a great idea. A separate user with sudo access is safer and easier to audit.
 
@@ -38,7 +38,7 @@ From here on, you should be logged in as this user, not root.
 
 ***
 
-## 2. Set up SSH key authentication
+### 2. Set up SSH key authentication
 
 Password logins are the weakest part of most SSH setups. Keys are simpler, faster, and far more secure.
 
@@ -66,7 +66,7 @@ If permissions are wrong, SSH will silently ignore the file.
 
 ***
 
-## 3. Harden the SSH configuration
+### 3. Harden the SSH configuration
 
 Now we disable root login and all password-based authentication.
 
@@ -123,7 +123,7 @@ Before restarting SSH, **make sure you can log in with your key**.
 
 ***
 
-## 4. Restart SSH
+### 4. Restart SSH
 
 Apply the changes:
 
@@ -135,18 +135,18 @@ Keep your current session open and test a new SSH connection in another terminal
 
 ***
 
-## 5. Install and configure Fail2Ban
+### 5. Install and configure Fail2Ban
 
 Fail2Ban watches logs and automatically blocks IPs that keep failing authentication. It’s a simple layer that stops most background noise immediately.
 
-### Install Fail2Ban
+#### Install Fail2Ban
 
 ```bash
 sudo apt update
 sudo apt install fail2ban -y
 ```
 
-### Configure the SSH jail
+#### Configure the SSH jail
 
 Copy the default config so it doesn’t get overwritten by updates:
 
@@ -179,13 +179,13 @@ What these do:
 * **findtime**: time window to count failures
 * **bantime**: how long the IP stays banned (seconds)
 
-### Optional: protect other services
+#### Optional: protect other services
 
 If you’re running web servers or other exposed services, you can enable additional jails (e.g. `nginx`, `apache`, `vsftpd`) in the same file.
 
 ***
 
-### Start and enable Fail2Ban
+#### Start and enable Fail2Ban
 
 ```bash
 sudo systemctl enable fail2ban
@@ -193,7 +193,7 @@ sudo systemctl start fail2ban
 sudo systemctl status fail2ban
 ```
 
-### Check Fail2Ban status
+#### Check Fail2Ban status
 
 ```bash
 sudo fail2ban-client status
@@ -204,7 +204,7 @@ This shows active jails and currently banned IPs.
 
 ***
 
-## Final notes
+### Notes
 
 * SSH now only accepts key-based logins
 * root login is disabled entirely
