@@ -1,5 +1,5 @@
 ---
-title: "TechWizards Tech & IT Blog"
+title: "Technology & IT Blog"
 meta_title: "About"
 description: "Short tutorials, general tech and security notes, and write-ups on
   things learned while building and breaking stuff."
