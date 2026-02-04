@@ -27,7 +27,6 @@ wget https://raw.githubusercontent.com/cfunkz/Proxmox-Cloud-Init/main/start-vm
 chmod +x start-vm
 ./start-vm
 ```
-
 ​[VIEW SCRIPT](https://github.com/cfunkz/Proxmox-Cloud-Init)​
 
 ### What the script does
@@ -171,7 +170,7 @@ qm create "$VMID" \
 Creates the base VM. A few highlights:
 
 * `--cpu host` passes through CPU features for better performance
-* `--machine q35` and `--bios ovmf` enable UEFI boot (modern standard)
+* `--machine q35` and `--bios ovmf` enable UEFI boot
 * `--agent enabled=1` installs QEMU guest agent for better integration
 * `--serial0 socket` enables serial console access
 
