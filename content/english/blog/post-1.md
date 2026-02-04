@@ -1,5 +1,5 @@
 ---
-title: Automated Ubuntu VM Creation on Proxmox (Cloud-Init, No UI Clicks)
+title: EXAMPLE SCHEMA
 meta_title: Automated Ubuntu VM Creation on Proxmox (Cloud-Init, No UI Clicks)
 description: Create Ubuntu virtual machines on Proxmox automatically using a
   Bash script and cloud-init. No UI clicks, validated inputs, SSH keys, and
