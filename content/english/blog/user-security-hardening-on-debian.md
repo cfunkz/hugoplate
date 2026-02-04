@@ -7,6 +7,7 @@ description: Learn how to secure SSH on Debian 11 and 12 by creating a non-root
 image: media/assets/images/1264201d-5939-4309-849c-cc3f398f9e75.jpg
 categories:
   - Security
+  - Tutorial
 author: David B.
 tags:
   - linux
