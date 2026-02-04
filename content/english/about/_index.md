@@ -2,7 +2,7 @@
 title: "Hey, I am John Doe!"
 meta_title: "About"
 description: "this is meta description"
-image: "/images/image-placeholder.png"
+image: "/images/1b325e00-cdf4-4003-bc02-47ceb9d7aec9.jpg"
 layout: "about"
 draft: false
 ---
