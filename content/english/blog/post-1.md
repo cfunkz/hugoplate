@@ -13,6 +13,7 @@ tags:
   - proxmox
   - bash
   - linux
+  - virtual machine
 draft: false
 ---
 ## Automated Ubuntu VM Creation on Proxmox: A Practical Guide
