@@ -19,7 +19,7 @@ draft: false
 
 Launching virtual machines on Proxmox doesn't have to be tedious! This bash script automates the entire process of creating an Ubuntu cloud-init VM with configurable defaults, network and zero manual configuration. The following tutorial provides a pre-made script and breaks down how it works.
 
-## Quick Start
+## Quick Start (run on Proxmox root shell)
 
 ```bash
 wget https://raw.githubusercontent.com/cfunkz/Proxmox-Cloud-Init/main/start-vm
