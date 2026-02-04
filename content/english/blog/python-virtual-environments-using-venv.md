@@ -4,7 +4,7 @@ meta_title: "Python Virtual Environments (venv) on Windows and Linux"
 description: "Learn how to create and use Python virtual environments with venv
   on Windows and Linux to isolate dependencies and avoid pip conflicts."
 date: ""
-image: "media/assets/images/Screenshot 2026-02-04 160141.png"
+image: ""
 categories:
   - Tutorial
   - Development
