@@ -20,16 +20,6 @@ draft: false
 ---
 ## Automated Ubuntu VM Creation on Proxmox (Cloud-Init, No UI Clicks)
 
-### Meta title
-
-**Automated Ubuntu VM Creation on Proxmox with Cloud-Init**
-
-### Meta description
-
-Create Ubuntu virtual machines on Proxmox automatically using a Bash script and cloud-init. No UI clicks, validated inputs, SSH keys, and clean defaults.
-
-***
-
 Spinning up Ubuntu VMs on Proxmox is straightforward, but doing it _repeatedly_ through the web UI gets old fast. Too many clicks, easy to miss a setting, and hard to keep things consistent.
 
 This guide walks through a Bash script that automates the entire process. It creates an Ubuntu cloud-init VM with sensible defaults, handles networking, validates inputs, and boots the VM ready for SSH — all from the command line.
