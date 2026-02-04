@@ -21,8 +21,6 @@ Launching virtual machines on Proxmox doesn't have to be tedious! This bash scri
 
 ## Quick Start
 
-Get up and running in seconds:
-
 ```bash
 wget https://raw.githubusercontent.com/cfunkz/Proxmox-Cloud-Init/main/start-vm
 chmod +x start-vm
