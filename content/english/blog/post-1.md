@@ -2,7 +2,7 @@
 title: "Automated Ubuntu VM Creation on Proxmox: A Practical Guide"
 meta_title: "Automated Ubuntu VM - Proxmox"
 description: "Automated Ubuntu VM Creation on Proxmox: A Practical Guide"
-date: 2022-04-04T05:00:00.000Z
+date: 2026-02-04T06:00:00.000Z
 image: "media/assets/images/Screenshot 2026-02-04 012905.png"
 categories:
   - Tutorial
