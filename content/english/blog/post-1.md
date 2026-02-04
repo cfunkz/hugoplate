@@ -222,6 +222,6 @@ qm start "$VMID"
 rm -f "$IMG_PATH"
 ```
 
-Resizes the disk to the requested size, sets the boot order, starts the VM, and cleans up the downloaded image. Everything is automated.
+Resizes the disk to the requested size, sets the boot order, starts the VM, and cleans up the downloaded image.
 
 ​
