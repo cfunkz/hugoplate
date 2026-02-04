@@ -297,7 +297,5 @@ The disk is resized, boot order set, the VM started, and the downloaded image cl
 
 ### Final thoughts
 
-This script isn’t trying to replace Terraform or Ansible. It’s meant to solve a very specific problem: **creating clean Ubuntu VMs on Proxmox quickly and consistently**.
-
 If you spend time clicking through the UI or retyping the same `qm` commands, this approach saves time and avoids mistakes while still being transparent and easy to modify.
 ​
