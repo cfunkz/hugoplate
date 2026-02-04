@@ -11,18 +11,18 @@ weight = 2
 name = "Content"
 
 [[main]]
-parent = "Blog"
+parent = "Content"
 name = "Blog"
 url = "/blog"
 weight = 1
 
 [[main]]
-parent = "Blog"
+parent = "Content"
 name = "Authors"
 url = "/authors"
 
 [[main]]
-parent = "Blog"
+parent = "Content"
 name = "Categories"
 url = "/categories"
 
