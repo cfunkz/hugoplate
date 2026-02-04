@@ -19,18 +19,6 @@ draft: false
 
 Launching virtual machines on Proxmox doesn't have to be tedious! This bash script automates the entire process of creating an Ubuntu cloud-init VM with configurable defaults, network and zero manual configuration. The following tutorial provides a pre-made script and breaks down how it works.
 
-## What It Does
-
-- Downloads provided cloud image automatically (Ubuntu Noble default)
-- Validates all inputs (VMID, IP addresses, storage)
-- Creates VM with modern defaults (UEFI, virtio drivers, QEMU agent)
-- Configures networking (static IP or DHCP)
-- Sets up cloud-init user and password
-- Imports SSH public keys (optional)
-- Resizes disk to your specification
-- Starts the VM and cleans up temporary files
-- Displays final SSH connection details
-
 ## Quick Start (Run as root on Proxmox)
 
 ```bash
@@ -40,6 +28,18 @@ chmod +x start-vm
 ```
 
 ​[VIEW SCRIPT](https://github.com/cfunkz/Proxmox-Cloud-Init)​
+
+## What the script does
+
+* Downloads provided cloud image automatically (Ubuntu Noble default)
+* Validates all inputs (VMID, IP addresses, storage)
+* Creates VM with modern defaults (UEFI, virtio drivers, QEMU agent)
+* Configures networking (static IP or DHCP)
+* Sets up cloud-init user and password
+* Imports SSH public keys (optional)
+* Resizes disk to your specification
+* Starts the VM and cleans up temporary files
+* Displays final SSH connection details
 
 ## Why Automate VM Creation?
 
@@ -222,8 +222,5 @@ rm -f "$IMG_PATH"
 ```
 
 Resizes the disk to the requested size, sets the boot order, starts the VM, and cleans up the downloaded image. Everything is automated.
-
-
-
 
 ​
