@@ -1,6 +1,6 @@
 ---
-title: "Technology & IT Blog"
-meta_title: "About"
+title: "About"
+meta_title: "Technology & IT Blog"
 description: "Short tutorials, general tech and security notes, and write-ups on
   things learned while building and breaking stuff."
 image: "/images/1b325e00-cdf4-4003-bc02-47ceb9d7aec9.jpg"
