@@ -1,6 +1,6 @@
 ---
 title: "How to lauch Ubuntu VM on Proxmox: A Practical Guide"
-meta_title: "How to create Ubuntu VM - Proxmox"
+meta_title: "How to create Ubuntu VM on Proxmox"
 description: "Automated Ubuntu VM Creation on Proxmox: A Practical Guide"
 date: 2026-02-04T01:00:00.000Z
 image: "media/assets/images/Screenshot 2026-02-04 021414.png"
