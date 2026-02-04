@@ -1,7 +1,8 @@
 ---
-title: "Hey, I am John Doe!"
+title: "TechWizards Blog"
 meta_title: "About"
-description: "this is meta description"
+description: "Short tutorials, general tech and security notes, and write-ups on
+  things learned while building and breaking stuff."
 image: "/images/1b325e00-cdf4-4003-bc02-47ceb9d7aec9.jpg"
 layout: "about"
 draft: false
