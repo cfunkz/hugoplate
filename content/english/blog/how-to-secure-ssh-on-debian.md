@@ -17,7 +17,7 @@ tags:
   - fail2ban
 draft: false
 ---
-​## How to Secure SSH on Debian 11 & 12 (Users, Keys, Fail2Ban)
+## How to Secure SSH on Debian 11 & 12 (Users, Keys, Fail2Ban)
 
 When you spin up a fresh Debian (or any distro), SSH is usually the first thing exposed to the internet and also the first thing attackers start poking at.
 
@@ -28,8 +28,6 @@ This guide walks through a simple, proven setup:
 * add Fail2Ban to block brute-force attempts
 
 Everything here works on **Debian 11 (Bullseye)** and **Debian 12 (Bookworm)**.
-
-***
 
 ### 1. Create a non-root user
 
@@ -224,4 +222,3 @@ This shows active jails and currently banned IPs.
 * works on Debian 11 and 12
 
 Before logging out for good, **double-check your SSH key works**. Locking yourself out is still a common mistake.
-
